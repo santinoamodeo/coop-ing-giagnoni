@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cooperativa Giagnoni — Vinos de Mendoza</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--wine:#6B1A2A;--wine-dark:#3D0A14;--wine-deep:#1A0408;--gold:#C9A84C;--gold-light:#E8C97A;--cream:#F5EDD8;--warm-white:#FAF6EE;--charcoal:#1C1C1C}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Montserrat',sans-serif;background:var(--charcoal);color:var(--cream);overflow-x:hidden}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:22px 60px;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(to bottom,rgba(26,4,8,0.97) 0%,transparent 100%);transition:background .4s}
+nav.scrolled{background:rgba(26,4,8,0.98);border-bottom:1px solid rgba(201,168,76,.15)}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;letter-spacing:3px;color:var(--gold);text-decoration:none;text-transform:uppercase}
+.nav-logo span{display:block;font-size:9px;letter-spacing:5px;color:var(--cream);opacity:.6;font-family:'Montserrat',sans-serif;font-weight:300;margin-top:-2px}
+.nav-links{display:flex;gap:36px;list-style:none}
+.nav-links a{color:var(--cream);text-decoration:none;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;font-weight:400;opacity:.8;transition:all .3s}
+.nav-links a:hover{color:var(--gold);opacity:1}
+.nav-cta{padding:10px 26px;border:1px solid var(--gold);color:var(--gold);font-size:9px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;font-weight:500;transition:all .3s}
+.nav-cta:hover{background:var(--gold);color:var(--wine-deep)}
+.hero{height:100vh;position:relative;display:flex;align-items:center;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 25% 65%,rgba(107,26,42,.5) 0%,transparent 55%),radial-gradient(ellipse at 80% 20%,rgba(201,168,76,.06) 0%,transparent 50%),linear-gradient(135deg,#080103 0%,#1a0408 40%,#0d0d0d 100%)}
+.hero-grain{position:absolute;inset:0;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:180px 180px}
+.hero-content{position:relative;z-index:2;padding:0 8% 0 10%;max-width:680px}
+.hero-eyebrow{font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);font-weight:400;margin-bottom:30px;display:flex;align-items:center;gap:16px;opacity:0;animation:fadeUp 1s .3s forwards}
+.hero-eyebrow::before{content:'';width:36px;height:1px;background:var(--gold)}
+.hero-headline{font-family:'Cormorant Garamond',serif;font-size:clamp(50px,7.5vw,92px);line-height:.93;font-weight:300;color:var(--warm-white);margin-bottom:32px;opacity:0;animation:fadeUp 1s .5s forwards}
+.hero-headline em{font-style:italic;color:var(--gold-light)}
+.hero-sub{font-size:13px;line-height:1.9;color:rgba(245,237,216,.6);font-weight:300;max-width:440px;margin-bottom:50px;letter-spacing:.3px;opacity:0;animation:fadeUp 1s .7s forwards}
+.hero-btns{display:flex;gap:24px;align-items:center;opacity:0;animation:fadeUp 1s .9s forwards}
+.btn-primary{padding:15px 40px;background:var(--wine);color:var(--cream);font-size:9px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;font-weight:500;border:1px solid var(--wine);transition:all .4s;position:relative;overflow:hidden}
+.btn-primary::after{content:'';position:absolute;inset:0;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .4s;z-index:-1}
+.btn-primary:hover{color:var(--wine-deep);border-color:var(--gold)}
+.btn-primary:hover::after{transform:scaleX(1)}
+.btn-ghost{color:rgba(245,237,216,.7);font-size:9px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;font-weight:300;display:flex;align-items:center;gap:10px;transition:all .3s}
+.btn-ghost:hover{color:var(--gold);opacity:1}
+.hero-bottles{position:absolute;right:4%;bottom:0;z-index:2;display:flex;align-items:flex-end;opacity:0;animation:fadeIn 1.2s 1.1s forwards}
+.hero-bottle{height:520px;width:auto;filter:drop-shadow(0 30px 60px rgba(0,0,0,.7));object-fit:contain}
+.hero-bottle:first-child{transform:rotate(-4deg) translateY(-30px);margin-right:-15px;z-index:1}
+.hero-bottle:last-child{transform:rotate(3deg)}
+.hero-scroll{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;color:rgba(245,237,216,.35);font-size:8px;letter-spacing:3px;text-transform:uppercase;opacity:0;animation:fadeIn 1s 1.6s forwards}
+.scroll-line{width:1px;height:56px;background:linear-gradient(to bottom,transparent,var(--gold));animation:sAnim 2s infinite}
+@keyframes sAnim{0%,100%{opacity:.3;transform:scaleY(.5)}50%{opacity:1;transform:scaleY(1)}}
+.marquee-strip{background:var(--wine-dark);padding:13px 0;overflow:hidden;border-top:1px solid rgba(201,168,76,.25);border-bottom:1px solid rgba(201,168,76,.25)}
+.marquee-inner{display:flex;animation:marquee 22s linear infinite;white-space:nowrap}
+.mi{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);padding:0 36px}
+.md{color:rgba(201,168,76,.4)}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+section{padding:110px 60px}
+.section-label{font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:18px;display:flex;align-items:center;gap:14px}
+.section-label::before{content:'';width:28px;height:1px;background:var(--gold)}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,5vw,62px);font-weight:300;line-height:1.08;color:var(--warm-white)}
+.section-title em{font-style:italic;color:var(--gold-light)}
+.divider{width:50px;height:1px;background:var(--gold);margin:28px 0;opacity:.45}
+.about{background:#0c0305}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:90px;align-items:center;max-width:1200px;margin:0 auto}
+.about-text p{font-size:13.5px;line-height:2;color:rgba(245,237,216,.6);font-weight:300;margin-bottom:18px}
+.about-stats{display:grid;grid-template-columns:1fr 1fr;gap:34px;margin-top:46px}
+.stat{border-left:2px solid var(--wine);padding-left:18px}
+.stat-num{font-family:'Cormorant Garamond',serif;font-size:46px;font-weight:300;color:var(--gold);line-height:1}
+.stat-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#777;margin-top:5px}
+.about-visual{position:relative}
+.about-frame{aspect-ratio:3/4;background:linear-gradient(135deg,var(--wine-dark) 0%,#280810 50%,#3d0a14 100%);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.about-frame::before{content:'G';font-family:'Cormorant Garamond',serif;font-size:320px;font-weight:300;color:rgba(201,168,76,.05);line-height:1;pointer-events:none}
+.about-frame::after{content:'Mendoza · Argentina · Junín';font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);opacity:.6;position:absolute;bottom:28px;left:0;right:0;text-align:center}
+.about-acc{position:absolute;top:-18px;right:-18px;width:140px;height:140px;border:1px solid rgba(201,168,76,.18)}
+.about-acc2{position:absolute;bottom:-18px;left:-18px;width:90px;height:90px;border:1px solid rgba(201,168,76,.12)}
+.terroir{background:#0d0305;text-align:center}
+.terroir-content{max-width:780px;margin:0 auto 72px}
+.terroir-content .section-label{justify-content:center}
+.terroir-content .section-label::before{display:none}
+.terroir-content p{font-size:14px;line-height:2;color:rgba(245,237,216,.55);font-weight:300}
+.terroir-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;max-width:1200px;margin:0 auto}
+.terroir-card{background:#141414;padding:48px 36px;position:relative;overflow:hidden;transition:all .4s}
+.terroir-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--wine);transform:scaleX(0);transition:transform .4s;transform-origin:left}
+.terroir-card:hover::after{transform:scaleX(1)}
+.terroir-card:hover{background:#1c1c1c}
+.tc-icon{font-size:32px;margin-bottom:22px}
+.tc-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--warm-white);margin-bottom:14px}
+.tc-text{font-size:12.5px;line-height:1.8;color:rgba(245,237,216,.48);font-weight:300}
+.wines{background:#080808}
+.wines-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:50px;max-width:1200px;margin-left:auto;margin-right:auto}
+.wines-tabs{display:flex;gap:2px;margin-bottom:52px;max-width:1200px;margin-left:auto;margin-right:auto}
+.tab-btn{padding:11px 26px;background:#181818;border:none;cursor:pointer;font-family:'Montserrat',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,237,216,.45);font-weight:400;transition:all .3s}
+.tab-btn.active{background:var(--wine);color:var(--cream)}
+.tab-btn:hover:not(.active){background:#222;color:var(--cream)}
+.wines-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;max-width:1200px;margin:0 auto}
+.wine-card{background:#111;position:relative;overflow:hidden;aspect-ratio:3/4;display:flex;flex-direction:column;justify-content:flex-end;padding:36px;cursor:pointer;transition:all .4s}
+.wine-card::before{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(8,2,4,.96) 0%,rgba(8,2,4,.45) 55%,transparent 100%);z-index:1;transition:opacity .4s}
+.wine-card-bg{position:absolute;inset:0;z-index:0;transition:transform .6s}
+.wine-card:hover .wine-card-bg{transform:scale(1.06)}
+.wc-bg-1{background:linear-gradient(135deg,#160306 0%,#3a0a12 50%,#6b1a2a 100%)}
+.wc-bg-2{background:linear-gradient(135deg,#091606 0%,#142e0a 50%,#244a14 100%)}
+.wc-bg-3{background:linear-gradient(135deg,#06091a 0%,#0e0e3a 50%,#1a1a6a 100%)}
+.wc-bg-4{background:linear-gradient(135deg,#160e04 0%,#3a2608 50%,#6a450a 100%)}
+.wc-bg-5{background:linear-gradient(135deg,#061214 0%,#0c262c 50%,#1a424e 100%)}
+.wc-bg-6{background:linear-gradient(135deg,#140618 0%,#300838 50%,#5a1868 100%)}
+.wine-card-content{position:relative;z-index:2}
+.wc-line{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.wc-name{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;color:var(--warm-white);margin-bottom:14px;line-height:1.2}
+.wc-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.wc-tag{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 9px;border:1px solid rgba(201,168,76,.25);color:rgba(245,237,216,.5)}
+.wc-notes{font-size:11.5px;color:rgba(245,237,216,.45);line-height:1.65;font-weight:300;margin-bottom:16px;max-height:0;overflow:hidden;transition:max-height .4s}
+.wine-card:hover .wc-notes{max-height:100px}
+.wc-arrow{display:inline-flex;align-items:center;gap:8px;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:500}
+.wine-card-large{grid-column:span 2;aspect-ratio:16/9}
+.method{background:#200810;position:relative;overflow:hidden}
+.method::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 0% 100%,rgba(201,168,76,.05) 0%,transparent 50%),radial-gradient(ellipse at 100% 0%,rgba(107,26,42,.3) 0%,transparent 50%)}
+.method-grid{display:grid;grid-template-columns:1fr 1fr;gap:90px;align-items:center;max-width:1200px;margin:0 auto;position:relative;z-index:1}
+.method p{font-size:13.5px;line-height:2;color:rgba(245,237,216,.62);font-weight:300;margin-bottom:18px}
+.method-feats{display:flex;flex-direction:column;gap:22px;margin-top:38px}
+.mf{display:flex;gap:18px;align-items:flex-start}
+.mf-num{font-family:'Cormorant Garamond',serif;font-size:36px;color:rgba(201,168,76,.28);font-weight:300;line-height:1;min-width:38px}
+.mf-text h4{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+.mf-text p{font-size:12.5px;color:rgba(245,237,216,.48);line-height:1.7;font-weight:300}
+.diagram-wrap{display:flex;flex-direction:column;align-items:center;gap:18px}
+.d-vessel{width:190px;height:270px;border:2px solid rgba(201,168,76,.28);border-radius:0 0 95px 95px;position:relative;overflow:hidden;background:linear-gradient(to bottom,rgba(107,26,42,.15),rgba(107,26,42,.5))}
+.d-must{position:absolute;bottom:0;left:0;right:0;height:62%;background:linear-gradient(to top,rgba(107,26,42,.9),rgba(107,26,42,.35));animation:mRise 4s ease-in-out infinite}
+@keyframes mRise{0%,100%{height:58%}50%{height:68%}}
+.d-cap{position:absolute;top:16%;left:0;right:0;height:18%;background:rgba(50,8,16,.7);border-bottom:1px dashed rgba(201,168,76,.28);display:flex;align-items:center;justify-content:center}
+.d-cap span{font-size:8px;letter-spacing:2px;color:var(--gold);text-transform:uppercase}
+.d-co2{position:absolute;top:0;left:0;right:0;height:16%;background:linear-gradient(to top,rgba(201,168,76,.08),rgba(201,168,76,.01));display:flex;align-items:center;justify-content:center}
+.d-co2 span{font-size:8px;letter-spacing:2px;color:var(--gold);text-transform:uppercase}
+.d-bubs{position:absolute;bottom:32%;left:50%;transform:translateX(-50%);display:flex;gap:6px}
+.bub{width:5px;height:5px;background:rgba(201,168,76,.5);border-radius:50%;animation:bRise 2s ease-in infinite}
+.bub:nth-child(2){animation-delay:.6s;width:4px;height:4px}
+.bub:nth-child(3){animation-delay:1.1s;width:7px;height:7px}
+@keyframes bRise{0%{transform:translateY(0);opacity:1}100%{transform:translateY(-110px);opacity:0}}
+.d-labels{display:flex;justify-content:space-between;width:200px}
+.d-lbl{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,237,216,.4);text-align:center}
+.olive{background:#08100a}
+.olive-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;max-width:1200px;margin:0 auto}
+.olive-visual{height:480px;background:linear-gradient(135deg,#0c180a,#182c0e,#2a4818);position:relative;display:flex;align-items:center;justify-content:center;font-size:110px;opacity:.18}
+.olive-badge{position:absolute;bottom:28px;right:28px;width:96px;height:96px;border:1px solid rgba(201,168,76,.28);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;background:rgba(8,16,10,.6)}
+.olive-badge span{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--gold);display:block;line-height:1;opacity:1!important}
+.olive-badge small{font-size:7px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,237,216,.45);opacity:1!important}
+.olive-content p{font-size:13.5px;line-height:2;color:rgba(245,237,216,.62);font-weight:300;margin-bottom:16px}
+.olive-feats{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:38px}
+.of{padding:22px;border:1px solid rgba(201,168,76,.1)}
+.of-title{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:7px}
+.of-text{font-size:12px;color:rgba(245,237,216,.45);line-height:1.6;font-weight:300}
+.governance{background:#0d0d0d}
+.gov-grid{display:grid;grid-template-columns:1fr 2fr;gap:80px;max-width:1200px;margin:52px auto 0}
+.gov-intro p{font-size:13.5px;line-height:2;color:rgba(245,237,216,.55);font-weight:300}
+.gov-row{display:flex;align-items:baseline;padding:17px 0;border-bottom:1px solid rgba(255,255,255,.05);transition:all .3s}
+.gov-row:hover{border-bottom-color:rgba(201,168,76,.18)}
+.gov-role{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#666;font-weight:400;width:195px;flex-shrink:0}
+.gov-name{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--warm-white)}
+.experience{background:#200810;position:relative;overflow:hidden;text-align:center}
+.experience::before{content:'GIAGNONI';font-family:'Cormorant Garamond',serif;font-size:200px;font-weight:300;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:rgba(201,168,76,.03);white-space:nowrap;pointer-events:none;letter-spacing:18px}
+.exp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;max-width:1200px;margin:52px auto 0}
+.exp-card{background:rgba(0,0,0,.5);padding:48px 36px;border:1px solid rgba(201,168,76,.07);transition:all .4s;text-align:left}
+.exp-card:hover{background:rgba(0,0,0,.7);border-color:rgba(201,168,76,.2)}
+.exp-icon{font-size:30px;margin-bottom:22px}
+.exp-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;color:var(--warm-white);margin-bottom:14px}
+.exp-text{font-size:13px;line-height:1.8;color:rgba(245,237,216,.48);font-weight:300}
+.exp-cta{margin-top:28px;display:inline-flex;align-items:center;gap:8px;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold)}
+.contact{background:#080106}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;max-width:1200px;margin:0 auto}
+.contact-info p{font-size:13.5px;line-height:2;color:rgba(245,237,216,.55);font-weight:300;margin-bottom:38px}
+.contact-details{display:flex;flex-direction:column;gap:22px}
+.c-detail{display:flex;gap:18px;align-items:flex-start}
+.c-icon{font-size:17px;opacity:.55;min-width:22px}
+.c-text{font-size:13px;color:rgba(245,237,216,.55);line-height:1.7;font-weight:300}
+.c-text strong{display:block;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:3px}
+.form-group{margin-bottom:22px}
+.form-group label{display:block;font-size:8.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:9px;font-weight:500}
+.form-group input,.form-group textarea,.form-group select{width:100%;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.09);color:var(--cream);font-family:'Montserrat',sans-serif;font-size:13px;padding:13px 17px;outline:none;transition:border-color .3s;font-weight:300}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:rgba(201,168,76,.38)}
+.form-group textarea{height:110px;resize:vertical}
+.form-group select{cursor:pointer}
+.form-group select option{background:#1a0408}
+.form-submit{width:100%;padding:15px;background:var(--wine);border:1px solid var(--wine);color:var(--cream);font-family:'Montserrat',sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;font-weight:500;transition:all .3s}
+.form-submit:hover{background:var(--gold);border-color:var(--gold);color:var(--wine-deep)}
+footer{background:#0d0103;padding:60px;border-top:1px solid rgba(201,168,76,.12)}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:56px;max-width:1200px;margin:0 auto}
+.f-logo{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:var(--gold);letter-spacing:3px;text-transform:uppercase}
+.f-tag{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,237,216,.35);margin-top:5px;font-weight:300}
+.f-desc{font-size:12px;line-height:1.8;color:rgba(245,237,216,.35);margin-top:18px;font-weight:300}
+.f-col h5{font-size:8.5px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:18px;font-weight:500}
+.f-col ul{list-style:none;display:flex;flex-direction:column;gap:11px}
+.f-col ul li a{font-size:12px;color:rgba(245,237,216,.42);text-decoration:none;font-weight:300;transition:color .3s;letter-spacing:.3px}
+.f-col ul li a:hover{color:var(--gold)}
+.footer-bottom{max-width:1200px;margin:52px auto 0;padding-top:26px;border-top:1px solid rgba(255,255,255,.04);display:flex;justify-content:space-between;align-items:center}
+.f-copy,.f-rights{font-size:11px;color:rgba(245,237,216,.28);font-weight:300}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.reveal{opacity:0;transform:translateY(36px);transition:opacity .8s ease,transform .8s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-d1{transition-delay:.1s}.reveal-d2{transition-delay:.2s}.reveal-d3{transition-delay:.3s}
+@media(max-width:900px){nav{padding:18px 24px}.nav-links{display:none}section{padding:72px 24px}.hero-content{padding:0 24px}.hero-bottles{display:none}.about-grid,.method-grid,.olive-grid,.contact-grid,.footer-grid{grid-template-columns:1fr;gap:36px}.wines-grid{grid-template-columns:1fr}.wine-card-large{grid-column:span 1;aspect-ratio:3/4}.terroir-cards,.exp-grid{grid-template-columns:1fr}.gov-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr}.about-stats{grid-template-columns:1fr 1fr}.gov-role{width:140px;font-size:8.5px}.hero-headline{font-size:46px}}
+</style>
+</head>
+<body>
+
+<nav id="mainNav">
+  <a href="#" class="nav-logo">Giagnoni<span>Cooperativa Vitivinícola</span></a>
+  <ul class="nav-links">
+    <li><a href="#nosotros">Nosotros</a></li>
+    <li><a href="#vinos">Vinos</a></li>
+    <li><a href="#metodo">Método</a></li>
+    <li><a href="#aceite">Aceite</a></li>
+    <li><a href="#directivos">Directivos</a></li>
+    <li><a href="#experiencias">Experiencias</a></li>
+  </ul>
+  <a href="#contacto" class="nav-cta">Contacto</a>
+</nav>
+
+<section class="hero" id="inicio">
+  <div class="hero-bg"></div>
+  <div class="hero-grain"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Mendoza · Argentina · Desde el Corazón de Junín</div>
+    <h1 class="hero-headline">Tradición<br>Cooperativa.<br><em>Innovación</em><br>Enológica.</h1>
+    <p class="hero-sub">Vinos elaborados artesanalmente en el corazón de Junín, Mendoza. Uvas seleccionadas bajo la guía de enólogos y agrónomos comprometidos con la excelencia.</p>
+    <div class="hero-btns">
+      <a href="#vinos" class="btn-primary">Explorar Vinos</a>
+      <a href="#nosotros" class="btn-ghost">Nuestra Historia →</a>
+    </div>
+  </div>
+  <div class="hero-bottles">
+    <img src="data:image/png;base64,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" alt="Cabernet Franc Giagnoni" class="hero-bottle">
+    <img src="data:image/png;base64,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" alt="Malbec Bonarda Giagnoni" class="hero-bottle">
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Descubrir
+  </div>
+</section>
+
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <span class="mi">Vinos Finos</span><span class="md">◆</span>
+    <span class="mi">Línea Roble</span><span class="md">◆</span>
+    <span class="mi">Línea Pasión</span><span class="md">◆</span>
+    <span class="mi">Aceite Extra Virgen</span><span class="md">◆</span>
+    <span class="mi">Método Ganímede</span><span class="md">◆</span>
+    <span class="mi">Junín · Mendoza</span><span class="md">◆</span>
+    <span class="mi">Artesanal</span><span class="md">◆</span>
+    <span class="mi">Vinos Finos</span><span class="md">◆</span>
+    <span class="mi">Línea Roble</span><span class="md">◆</span>
+    <span class="mi">Línea Pasión</span><span class="md">◆</span>
+    <span class="mi">Aceite Extra Virgen</span><span class="md">◆</span>
+    <span class="mi">Método Ganímede</span><span class="md">◆</span>
+    <span class="mi">Junín · Mendoza</span><span class="md">◆</span>
+    <span class="mi">Artesanal</span><span class="md">◆</span>
+  </div>
+</div>
+
+<section class="about" id="nosotros">
+  <div class="about-grid">
+    <div>
+      <div class="section-label reveal">Nuestra Historia</div>
+      <h2 class="section-title reveal reveal-d1">Del viñedo<br>a la <em>copa</em></h2>
+      <div class="divider reveal reveal-d2"></div>
+      <div class="about-text reveal reveal-d2">
+        <p>La Cooperativa Vitivinícola Ingeniero Giagnoni nació con un propósito claro: reunir la pasión y el trabajo colectivo de viticultores mendocinos para producir vinos de calidad excepcional, manteniendo viva la identidad del terroir de Junín.</p>
+        <p>Ubicados a 50 km al este de la ciudad de Mendoza, en el distrito Ingeniero Cristóbal Giagnoni, nuestros viñedos son cuidadosamente guiados por técnicos agrónomos y enólogos comprometidos con la excelencia en cada etapa del proceso.</p>
+        <p>Ofrecemos desde varietales tranquilos hasta dulces naturales, vinos espumantes, mistela y aceite de oliva extra virgen, todos elaborados artesanalmente con el alma de la cooperación.</p>
+      </div>
+      <div class="about-stats reveal reveal-d3">
+        <div class="stat"><div class="stat-num">90%</div><div class="stat-label">Del territorio de Junín cultivado</div></div>
+        <div class="stat"><div class="stat-num">50km</div><div class="stat-label">Al este de Mendoza Capital</div></div>
+        <div class="stat"><div class="stat-num">263</div><div class="stat-label">km² de identidad vitivinícola</div></div>
+        <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Elaboración artesanal</div></div>
+      </div>
+    </div>
+    <div class="about-visual reveal reveal-d2">
+      <div class="about-frame"></div>
+      <div class="about-acc"></div>
+      <div class="about-acc2"></div>
+    </div>
+  </div>
+</section>
+
+<section class="terroir" id="terroir">
+  <div class="terroir-content">
+    <div class="section-label reveal">El Terroir</div>
+    <h2 class="section-title reveal reveal-d1">La tierra que<br><em>nos define</em></h2>
+    <div class="divider reveal reveal-d2" style="margin:26px auto"></div>
+    <p class="reveal reveal-d2">Junín es un oasis vitivinícola único donde el suelo, el clima y el trabajo humano se fusionan para dar vida a vinos de carácter inconfundible.</p>
+  </div>
+  <div class="terroir-cards">
+    <div class="terroir-card reveal">
+      <div class="tc-icon">🌊</div>
+      <div class="tc-title">Suelo Aluvional</div>
+      <p class="tc-text">Suelos arenosos y pedregosos de origen aluvional que brindan drenaje perfecto y concentran los aromas en la uva, generando vinos de gran expresividad.</p>
+    </div>
+    <div class="terroir-card reveal reveal-d1">
+      <div class="tc-icon">☀️</div>
+      <div class="tc-title">Clima Continental</div>
+      <p class="tc-text">Amplias oscilaciones térmicas entre el día y la noche preservan la acidez natural de la fruta, resultando en vinos frescos, vibrantes y de larga vida.</p>
+    </div>
+    <div class="terroir-card reveal reveal-d2">
+      <div class="tc-icon">🏔️</div>
+      <div class="tc-title">Cordillera de los Andes</div>
+      <p class="tc-text">La imponente barrera andina regula el clima y aporta el agua de deshielo que nutre nuestros viñedos a través del sistema de riego artificial.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wines" id="vinos">
+  <div class="wines-header">
+    <div>
+      <div class="section-label reveal">Nuestros Vinos</div>
+      <h2 class="section-title reveal reveal-d1">Elaborados<br><em>artesanalmente</em></h2>
+    </div>
+  </div>
+  <div class="wines-tabs reveal">
+    <button class="tab-btn active" onclick="filterWines('all',this)">Todos</button>
+    <button class="tab-btn" onclick="filterWines('finos',this)">Vinos Finos</button>
+    <button class="tab-btn" onclick="filterWines('roble',this)">Línea Roble</button>
+    <button class="tab-btn" onclick="filterWines('pasion',this)">Línea Pasión</button>
+  </div>
+  <div class="wines-grid" id="winesGrid">
+    <div class="wine-card wine-card-large" data-category="finos">
+      <div class="wine-card-bg wc-bg-1"></div>
+      <div class="wine-card-content">
+        <div class="wc-line">Vinos Finos · Tinto</div>
+        <div class="wc-name">Cabernet Franc</div>
+        <div class="wc-tags"><span class="wc-tag">Rojo Rubí</span><span class="wc-tag">Pimiento</span><span class="wc-tag">Pimienta</span></div>
+        <div class="wc-notes">Hojas de tomate, pimiento y pimienta negra en nariz. Suavidad, inolvidable recuerdo y personalidad son sensaciones encontradas al beberlo.</div>
+        <span class="wc-arrow">Descubrir →</span>
+      </div>
+    </div>
+    <div class="wine-card" data-category="finos">
+      <div class="wine-card-bg wc-bg-4"></div>
+      <div class="wine-card-content">
+        <div class="wc-line">Vinos Finos · Tinto</div>
+        <div class="wc-name">Malbec / Bonarda</div>
+        <div class="wc-tags"><span class="wc-tag">Frutas Rojas</span><span class="wc-tag">Ciruelas</span></div>
+        <div class="wc-notes">Frutas rojas, ciruelas, cerezas y frambuesas. Aromas dulces y persistentes. Frutado, entero y vivo, con final de boca muy agradable.</div>
+        <span class="wc-arrow">Descubrir →</span>
+      </div>
+    </div>
+    <div class="wine-card" data-category="finos">
+      <div class="wine-card-bg" style="background:linear-gradient(135deg,#160608,#450e10,#8a2020 100%)"></div>
+      <div class="wine-card-content">
+        <div class="wc-line">Vinos Finos · Tinto</div>
+        <div class="wc-name">Cabernet S. / Merlot</div>
+        <div class="wc-tags"><span class="wc-tag">Especiado</span><span class="wc-tag">Cereza</span></div>
+        <div class="wc-notes">Perfumes especiados, pimienta negra, pimiento y frutos secos. Gran estructura y personalidad, caracterizado por su armonía.</div>
+        <span class="wc-arrow">Descubrir →</span>
+      </div>
+    </div>
+    <div class="wine-card" data-category="finos">
+      <div class="wine-card-bg wc-bg-6"></div>
+      <div class="wine-card-content">
+        <div class="wc-line">Vinos Finos · Tinto</div>
+        <div class="wc-name">Tempranillo</div>
+        <div class="wc-tags"><span class="wc-tag">Moras</span><span class="wc-tag">Casis</span></div>
+        <div class="wc-notes">Rojo intenso con reflejos azules y negros. Moras, frutos negros, casis, gran complejidad. Intenso, profundo y amable en boca.</div>
+        <span class="wc-arrow">Descubrir →</span>
+      </div>
+    </div>
+    <div class="wine-card" data-category="finos">
+      <div class="wine-card-bg" style="background:linear-gradient(135deg,#0e1a08,#1e3510,#2e5018 100%)"></div>
+      <div class="wine-card-content">
+        <div class="wc-line">Vinos Finos · Blanco</div>
+        <div class="wc-name">Chardonnay</div>
+        <div class="wc-tags"><span class="wc-tag">Ananá</span><span class="wc-tag">Melón</span></div>
+        <div class="wc-notes">Amarillo con reflejos verdosos. Notas de ananá, melón, peras y miel sutil. Concentración, untuosidad y personalidad.</div>
+        <span class="wc-arrow">Descubrir →</span>
+      </div>
+    </div>
+    <div class="wine-card" data-category="finos">
+      <div class="wine-card-bg wc-bg-5"></div>
+      <div class="wine-card-content">
+        <div class="wc-line">Vinos Finos · Blanco</div>
+        <div class="wc-name">Chenin Blanc</div>
+        <div class="wc-tags"><span class="wc-tag">Tropical</span><span class="wc-tag">Floral</span></div>
+        <div class="wc-notes">Tonos verdes con reflejos dorados. Tropical, floral, cítrico. Identificado por su frescura y gran acidez natural.</div>
+        <span class="wc-arrow">Descubrir →</span>
+      </div>
+    </div>
+    <div class="wine-card" data-category="finos">
+      <div class="wine-card-bg wc-bg-2"></div>
+      <div class="wine-card-content">
+        <div class="wc-line">Vinos Finos · Blanco</div>
+        <div class="wc-name">Sauvignon B. / Torrontés</div>
+        <div class="wc-tags"><span class="wc-tag">Floral</span><span class="wc-tag">Tropical</span></div>
+        <div class="wc-notes">Excelente relación verdes-amarillos. Flores y frutas tropicales. Agilidad y frescura de la combinación Sauvignon Blanc y Torrontés Riojano.</div>
+        <span class="wc-arrow">Descubrir →</span>
+      </div>
+    </div>
+    <div class="wine-card wine-card-large" data-category="pasion">
+      <div class="wine-card-bg" style="background:linear-gradient(135deg,#1a0e04,#3e280a,#6e4a14 100%)"></div>
+      <div class="wine-card-content">
+        <div class="wc-line">Línea Pasión · Blend</div>
+        <div class="wc-name">Blend — Malbec / Bonarda / Syrah</div>
+        <div class="wc-tags"><span class="wc-tag">Frutado</span><span class="wc-tag">Especiado</span><span class="wc-tag">Intenso</span></div>
+        <div class="wc-notes">Placentera convivencia entre malbec, bonarda y syrah para transmitir sensaciones de frutos, especias de color intenso y armonioso paladar.</div>
+        <span class="wc-arrow">Descubrir →</span>
+      </div>
+    </div>
+    <div class="wine-card" data-category="roble">
+      <div class="wine-card-bg" style="background:linear-gradient(135deg,#180d04,#3e2806,#6e4a10 100%)"></div>
+      <div class="wine-card-content">
+        <div class="wc-line">Línea Roble · Tinto</div>
+        <div class="wc-name">Malbec / Tannat</div>
+        <div class="wc-tags"><span class="wc-tag">Roble</span><span class="wc-tag">Frutas Negras</span></div>
+        <div class="wc-notes">Malbec mendocino con el carácter austero del Tannat, madurado en roble para desarrollar personalidad única y profunda.</div>
+        <span class="wc-arrow">Descubrir →</span>
+      </div>
+    </div>
+    <div class="wine-card" data-category="roble">
+      <div class="wine-card-bg" style="background:linear-gradient(135deg,#0e1808,#1e320e,#2e5016 100%)"></div>
+      <div class="wine-card-content">
+        <div class="wc-line">Línea Roble · Blanco</div>
+        <div class="wc-name">Chardonnay Roble</div>
+        <div class="wc-tags"><span class="wc-tag">Vainilla</span><span class="wc-tag">Manteca</span></div>
+        <div class="wc-notes">Chardonnay con paso por barricas de roble que aportan complejidad, vainilla y una textura cremosa y envolvente.</div>
+        <span class="wc-arrow">Descubrir →</span>
+      </div>
+    </div>
+    <div class="wine-card" data-category="pasion">
+      <div class="wine-card-bg" style="background:linear-gradient(135deg,#0a0e18,#12183a,#1e286a 100%)"></div>
+      <div class="wine-card-content">
+        <div class="wc-line">Línea Pasión · Rosado</div>
+        <div class="wc-name">Syrah Rosado</div>
+        <div class="wc-tags"><span class="wc-tag">Frambuesas</span><span class="wc-tag">Rosa</span></div>
+        <div class="wc-notes">Elegante rosado elaborado con uvas Syrah. Color salmón brillante, aromas frescos de frambuesa y flor de durazno.</div>
+        <span class="wc-arrow">Descubrir →</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="method" id="metodo">
+  <div class="method-grid">
+    <div>
+      <div class="section-label reveal">Innovación Enológica</div>
+      <h2 class="section-title reveal reveal-d1">Método<br><em>Ganímede</em></h2>
+      <div class="divider reveal reveal-d2"></div>
+      <div class="reveal reveal-d2">
+        <p>El Método Ganímede es nuestra apuesta a la vanguardia enológica. Un sistema de vinificación que aprovecha el CO₂ generado naturalmente durante la fermentación para mejorar el contacto entre el hollejo y el mosto.</p>
+        <p>Este proceso innovador maximiza la extracción de aromas, color y taninos de manera suave y controlada, resultando en vinos de mayor complejidad, expresividad y calidad excepcional.</p>
+      </div>
+      <div class="method-feats reveal reveal-d3">
+        <div class="mf"><span class="mf-num">01</span><div class="mf-text"><h4>CO₂ Natural</h4><p>Aprovecha el dióxido de carbono producido en la fermentación, sin aditivos externos ni procesos invasivos.</p></div></div>
+        <div class="mf"><span class="mf-num">02</span><div class="mf-text"><h4>Máxima Extracción</h4><p>Mejora el contacto hollejo-mosto para una extracción superior de polifenoles, aromas y color.</p></div></div>
+        <div class="mf"><span class="mf-num">03</span><div class="mf-text"><h4>Calidad Superior</h4><p>El resultado son vinos de mayor estructura, complejidad y destacado potencial de guarda.</p></div></div>
+      </div>
+    </div>
+    <div class="diagram-wrap reveal reveal-d2">
+      <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;">Proceso de Fermentación</div>
+      <div class="d-vessel">
+        <div class="d-co2"><span>CO₂ Natural</span></div>
+        <div class="d-cap"><span>Hollejo</span></div>
+        <div class="d-must">
+          <div class="d-bubs"><div class="bub"></div><div class="bub"></div><div class="bub"></div></div>
+        </div>
+      </div>
+      <div class="d-labels">
+        <div class="d-lbl">Fermentación<br>Activa</div>
+        <div class="d-lbl">Extracción<br>Óptima</div>
+        <div class="d-lbl">Vino<br>Premium</div>
+      </div>
+      <div style="margin-top:32px;border:1px solid rgba(201,168,76,.18);padding:28px 32px;text-align:center;max-width:280px;">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--warm-white);margin-bottom:10px;">Tecnología de Vanguardia</div>
+        <div style="font-size:11px;letter-spacing:.5px;color:rgba(245,237,216,.45);line-height:1.7;font-weight:300;">Pioneros en la implementación del Método Ganímede en la región de Junín, Mendoza.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="olive" id="aceite">
+  <div class="olive-grid">
+    <div class="olive-visual reveal">
+      🫒
+      <div class="olive-badge">
+        <span>E.V.</span>
+        <small>Extra Virgen</small>
+      </div>
+    </div>
+    <div>
+      <div class="section-label reveal">Aceite de Oliva</div>
+      <h2 class="section-title reveal reveal-d1">Extra Virgen<br><em>Artesanal</em></h2>
+      <div class="divider reveal reveal-d2"></div>
+      <div class="reveal reveal-d2">
+        <p class="olive-content">Complementando nuestra producción vitivinícola, elaboramos artesanalmente un Aceite de Oliva Extra Virgen con materia prima de primera calidad, seleccionada de olivares cultivados bajo los mismos estándares de excelencia que nuestros viñedos.</p>
+        <p class="olive-content">Cada botella representa el compromiso de la Cooperativa Giagnoni con los productos de calidad excepcional y la tradición agrícola de Junín.</p>
+      </div>
+      <div class="olive-feats reveal reveal-d3">
+        <div class="of"><div class="of-title">Materia Prima</div><div class="of-text">Olivas de primera calidad, cosechadas en el punto óptimo de madurez.</div></div>
+        <div class="of"><div class="of-title">Elaboración</div><div class="of-text">Proceso artesanal que preserva todos los atributos del fruto.</div></div>
+        <div class="of"><div class="of-title">Categoría</div><div class="of-text">Extra Virgen, la categoría superior del aceite de oliva.</div></div>
+        <div class="of"><div class="of-title">Origen</div><div class="of-text">Mendoza, Argentina — terroir privilegiado para la olivicultura.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="governance" id="directivos">
+  <div style="max-width:1200px;margin:0 auto">
+    <div class="section-label reveal">Consejo de Administración</div>
+    <h2 class="section-title reveal reveal-d1">Quienes nos<br><em>conducen</em></h2>
+  </div>
+  <div class="gov-grid">
+    <div class="reveal reveal-d1">
+      <p style="font-size:13.5px;line-height:2;color:rgba(245,237,216,.55);font-weight:300">La Cooperativa Vitivinícola Ingeniero Giagnoni es dirigida por un Consejo de Administración comprometido con el bienestar de sus asociados y la excelencia de sus productos.</p>
+      <div style="margin-top:36px;border:1px solid rgba(201,168,76,.14);padding:28px">
+        <div style="font-size:8.5px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px">Cooperativa Vitivinícola</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--warm-white);margin-bottom:6px">Ingeniero Giagnoni Ltda.</div>
+        <div style="font-size:12px;color:rgba(245,237,216,.38);font-weight:300">Junín · Mendoza · Argentina</div>
+      </div>
+    </div>
+    <div class="reveal reveal-d2">
+      <div class="gov-row"><span class="gov-role">Presidente</span><span class="gov-name">Alicia Mabel Galante</span></div>
+      <div class="gov-row"><span class="gov-role">Vicepresidente</span><span class="gov-name">Miguel Ángel Sozzi</span></div>
+      <div class="gov-row"><span class="gov-role">Secretario</span><span class="gov-name">José Domingo Rubino</span></div>
+      <div class="gov-row"><span class="gov-role">Prosecretario</span><span class="gov-name">Martín Nicolás Villach</span></div>
+      <div class="gov-row"><span class="gov-role">Tesorero</span><span class="gov-name">Emilia Noemí Chacón</span></div>
+      <div class="gov-row"><span class="gov-role">Pro-tesorero</span><span class="gov-name">José Roberto Pani</span></div>
+      <div class="gov-row"><span class="gov-role">Vocales Titulares</span><span class="gov-name" style="font-size:16px">Abdo Musri · Casín Oscar · Anastasio Aldo · Sozzi Alejandro</span></div>
+      <div class="gov-row"><span class="gov-role">Síndico Titular</span><span class="gov-name" style="font-size:16px">Jorge A. Amodeo · Mariela R. Di Mano</span></div>
+      <div class="gov-row"><span class="gov-role">Sindico Suplente</span><span class="gov-name" style="font-size:16px">Orlando H. Piacentini · Olga E. Panella</span></div>
+      <div class="gov-row"><span class="gov-role">Contador</span><span class="gov-name">Hugo Amodeo</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="experience" id="experiencias">
+  <div style="max-width:1200px;margin:0 auto;position:relative;z-index:1">
+    <div class="section-label reveal" style="justify-content:center"><div style="display:flex;align-items:center;gap:14px"><div style="width:28px;height:1px;background:var(--gold)"></div>Enoturismo</div></div>
+    <h2 class="section-title reveal reveal-d1" style="text-align:center">Viví la<br><em>experiencia Giagnoni</em></h2>
+  </div>
+  <div class="exp-grid">
+    <div class="exp-card reveal">
+      <div class="exp-icon">🍷</div>
+      <div class="exp-title">Degustaciones Dirigidas</div>
+      <p class="exp-text">Catas guiadas por nuestros enólogos donde explorarás los perfiles sensoriales de nuestras líneas de vinos en un entorno íntimo y exclusivo.</p>
+      <div class="exp-cta">Reservar lugar →</div>
+    </div>
+    <div class="exp-card reveal reveal-d1">
+      <div class="exp-icon">🏛️</div>
+      <div class="exp-title">Showroom en Bodega</div>
+      <p class="exp-text">Visitá nuestra bodega y conocé de primera mano el proceso de elaboración, desde la viña hasta la botella, una experiencia educativa y sensorial única.</p>
+      <div class="exp-cta">Conocer más →</div>
+    </div>
+    <div class="exp-card reveal reveal-d2">
+      <div class="exp-icon">🌿</div>
+      <div class="exp-title">Recorrido por Viñedos</div>
+      <p class="exp-text">Caminá entre los viñedos de Junín, conocé el terroir de cerca y comprendé por qué nuestra tierra produce vinos de carácter único e inigualable.</p>
+      <div class="exp-cta">Planificar visita →</div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contacto">
+  <div class="contact-grid">
+    <div>
+      <div class="section-label reveal">Contacto</div>
+      <h2 class="section-title reveal reveal-d1">Hablemos<br><em>de vinos</em></h2>
+      <div class="divider reveal reveal-d2"></div>
+      <p class="reveal reveal-d2" style="font-size:13.5px;line-height:2;color:rgba(245,237,216,.55);font-weight:300;margin-bottom:36px">Solicite vía email su pedido de presupuesto y modalidades de pago para la adquisición de nuestra línea de productos. Con gusto atenderemos su consulta.</p>
+      <div class="contact-details reveal reveal-d3">
+        <div class="c-detail"><span class="c-icon">📍</span><div class="c-text"><strong>Dirección</strong>Milordo s/nº, Ingeniero Giagnoni<br>Junín · Mendoza · Argentina</div></div>
+        <div class="c-detail"><span class="c-icon">📞</span><div class="c-text"><strong>Teléfonos</strong>(0263) 4426454 / 4430049<br>Celular / WhatsApp: 261 (15) 453-2025</div></div>
+        <div class="c-detail"><span class="c-icon">✉️</span><div class="c-text"><strong>Email</strong>coopgiagnoni@coopgiagnoni.com.ar</div></div>
+      </div>
+    </div>
+    <div class="reveal reveal-d2">
+      <div class="form-group"><label>Nombre y apellido</label><input type="text" placeholder="Su nombre completo"></div>
+      <div class="form-group"><label>Email</label><input type="email" placeholder="su@email.com"></div>
+      <div class="form-group"><label>Asunto</label>
+        <select>
+          <option value="">Seleccionar motivo</option>
+          <option>Consulta de precios y disponibilidad</option>
+          <option>Pedido mayorista</option>
+          <option>Visita a la bodega</option>
+          <option>Degustación dirigida</option>
+          <option>Prensa y relaciones institucionales</option>
+          <option>Otro</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Mensaje</label><textarea placeholder="Escriba su consulta aquí..."></textarea></div>
+      <button class="form-submit" onclick="handleSubmit(event)">Enviar Mensaje</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="f-logo">Giagnoni</div>
+      <div class="f-tag">Desde Mendoza al Mundo</div>
+      <p class="f-desc">Cooperativa Vitivinícola Ingeniero Giagnoni Ltda. Vinos y aceites elaborados con pasión, tradición y tecnología desde el corazón de Junín, Mendoza.</p>
+    </div>
+    <div class="f-col"><h5>Vinos</h5><ul><li><a href="#vinos">Vinos Finos</a></li><li><a href="#vinos">Línea Roble</a></li><li><a href="#vinos">Línea Pasión</a></li><li><a href="#aceite">Aceite Extra Virgen</a></li></ul></div>
+    <div class="f-col"><h5>Nosotros</h5><ul><li><a href="#nosotros">Nuestra Historia</a></li><li><a href="#terroir">El Terroir</a></li><li><a href="#metodo">Método Ganímede</a></li><li><a href="#directivos">Directivos</a></li></ul></div>
+    <div class="f-col"><h5>Visítanos</h5><ul><li><a href="#experiencias">Degustaciones</a></li><li><a href="#experiencias">Recorrido Bodega</a></li><li><a href="#contacto">Contacto</a></li><li><a href="mailto:coopgiagnoni@coopgiagnoni.com.ar">Email directo</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <span class="f-copy">© 2024 Cooperativa Vitivinícola Ingeniero Giagnoni Ltda. Todos los derechos reservados.</span>
+    <span class="f-rights">coopgiagnoni.com.ar</span>
+  </div>
+</footer>
+
+<script>
+const nav=document.getElementById('mainNav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>60));
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+function filterWines(cat,btn){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.wine-card').forEach(c=>{
+    c.style.display=(cat==='all'||c.dataset.category===cat)?'flex':'none';
+  });
+}
+function handleSubmit(e){
+  const btn=e.target;
+  btn.textContent='✓ Mensaje Enviado';
+  btn.style.background='#1e4218';
+  btn.style.borderColor='#1e4218';
+  setTimeout(()=>{btn.textContent='Enviar Mensaje';btn.style.background='';btn.style.borderColor='';},3000);
+}
+</script>
+</body>
+</html>
